@@ -1,0 +1,77 @@
+# Copy to config/trading_plan.toml and edit.
+
+[meta]
+name = "microexec-paper-plan"
+timezone = "America/New_York"
+
+[ibkr]
+host = "127.0.0.1"
+# Common defaults: paper TWS often 7497, live TWS often 7496.
+# Confirm in your TWS / IB Gateway settings.
+paper_port = 7497
+live_port = 7496
+client_id = 2198
+account = ""  # optional; leave blank unless you need explicit allocation
+readonly_market_data = false
+
+[runtime]
+environment = "paper"  # paper | live
+live_enabled = false
+kill_switch_file = ".kill_switch"
+log_dir = "logs"
+
+[budget]
+max_gross_notional = 3000.00
+max_single_order_notional = 150.00
+max_daily_trades = 8
+min_cash_reserve = 250.00
+allow_short = false
+
+[orders]
+order_type = "LMT"
+time_in_force = "DAY"
+outside_regular_trading_hours = false
+require_quote = true
+send_by_default = false
+
+[[windows]]
+name = "morning_confirmed"
+timezone = "America/New_York"
+start = "09:45"
+end = "10:15"
+days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+
+[[windows]]
+name = "power_hour_careful"
+timezone = "America/New_York"
+start = "15:30"
+end = "15:55"
+days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+
+# Replace examples with real symbols you have explicitly approved.
+# The software is deliberately not recommending names.
+[[tickers]]
+symbol = "EXAMPLE"
+exchange = "SMART"
+currency = "USD"
+max_position_shares = 10
+max_order_shares = 2
+max_order_notional = 50.00
+min_price = 1.00
+max_price = 25.00
+max_spread_bps = 75.0
+min_bid_size = 1
+min_ask_size = 1
+
+[[tickers]]
+symbol = "DEMO"
+exchange = "SMART"
+currency = "USD"
+max_position_shares = 20
+max_order_shares = 5
+max_order_notional = 75.00
+min_price = 1.00
+max_price = 15.00
+max_spread_bps = 100.0
+min_bid_size = 1
+min_ask_size = 1

@@ -1,0 +1,202 @@
+# Demo watchlist config for paper-only meme / retail-hype research.
+# Copy to config/trading_plan.toml only after you review every symbol.
+
+[meta]
+name = "meme-microexec-paper-plan"
+timezone = "America/New_York"
+
+[ibkr]
+host = "127.0.0.1"
+paper_port = 7497
+live_port = 7496
+client_id = 2198
+account = ""
+readonly_market_data = false
+
+[runtime]
+environment = "paper"
+live_enabled = false
+kill_switch_file = ".kill_switch"
+log_dir = "logs"
+
+[budget]
+max_gross_notional = 3000.00
+max_single_order_notional = 125.00
+max_daily_trades = 6
+min_cash_reserve = 300.00
+allow_short = false
+
+[orders]
+order_type = "LMT"
+time_in_force = "DAY"
+outside_regular_trading_hours = false
+require_quote = true
+send_by_default = false
+
+[[windows]]
+name = "morning_after_open"
+timezone = "America/New_York"
+start = "09:45"
+end = "10:30"
+days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+
+[[windows]]
+name = "late_day_reviewed"
+timezone = "America/New_York"
+start = "15:15"
+end = "15:50"
+days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+
+
+[[windows]]
+name = "09:45-10:30"
+timezone = "America/New_York"
+start = "09:45"
+end = "10:30"
+days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+
+[[windows]]
+name = "10:00-11:15"
+timezone = "America/New_York"
+start = "10:00"
+end = "11:15"
+days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+
+[[windows]]
+name = "10:00-11:30"
+timezone = "America/New_York"
+start = "10:00"
+end = "11:30"
+days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+
+[[windows]]
+name = "10:15-11:30"
+timezone = "America/New_York"
+start = "10:15"
+end = "11:30"
+days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+
+[[windows]]
+name = "09:45-15:30"
+timezone = "America/New_York"
+start = "09:45"
+end = "15:30"
+days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+
+# Conservative example rules. Adjust after quote and fill review.
+[[tickers]]
+symbol = "GME"
+exchange = "SMART"
+currency = "USD"
+max_position_shares = 8
+max_order_shares = 2
+max_order_notional = 80.00
+min_price = 5.00
+max_price = 80.00
+max_spread_bps = 60.0
+min_bid_size = 1
+min_ask_size = 1
+
+[[tickers]]
+symbol = "AMC"
+exchange = "SMART"
+currency = "USD"
+max_position_shares = 50
+max_order_shares = 10
+max_order_notional = 40.00
+min_price = 0.50
+max_price = 20.00
+max_spread_bps = 120.0
+min_bid_size = 1
+min_ask_size = 1
+
+[[tickers]]
+symbol = "KOSS"
+exchange = "SMART"
+currency = "USD"
+max_position_shares = 10
+max_order_shares = 2
+max_order_notional = 35.00
+min_price = 1.00
+max_price = 25.00
+max_spread_bps = 180.0
+min_bid_size = 1
+min_ask_size = 1
+
+[[tickers]]
+symbol = "SOUN"
+exchange = "SMART"
+currency = "USD"
+max_position_shares = 20
+max_order_shares = 4
+max_order_notional = 60.00
+min_price = 1.00
+max_price = 35.00
+max_spread_bps = 80.0
+min_bid_size = 1
+min_ask_size = 1
+
+[[tickers]]
+symbol = "BBAI"
+exchange = "SMART"
+currency = "USD"
+max_position_shares = 30
+max_order_shares = 6
+max_order_notional = 60.00
+min_price = 1.00
+max_price = 25.00
+max_spread_bps = 100.0
+min_bid_size = 1
+min_ask_size = 1
+
+[[tickers]]
+symbol = "LUNR"
+exchange = "SMART"
+currency = "USD"
+max_position_shares = 16
+max_order_shares = 3
+max_order_notional = 60.00
+min_price = 1.00
+max_price = 40.00
+max_spread_bps = 100.0
+min_bid_size = 1
+min_ask_size = 1
+
+[[tickers]]
+symbol = "ACHR"
+exchange = "SMART"
+currency = "USD"
+max_position_shares = 30
+max_order_shares = 5
+max_order_notional = 60.00
+min_price = 1.00
+max_price = 30.00
+max_spread_bps = 100.0
+min_bid_size = 1
+min_ask_size = 1
+
+[[tickers]]
+symbol = "RKLB"
+exchange = "SMART"
+currency = "USD"
+max_position_shares = 16
+max_order_shares = 3
+max_order_notional = 75.00
+min_price = 1.00
+max_price = 60.00
+max_spread_bps = 90.0
+min_bid_size = 1
+min_ask_size = 1
+
+[[tickers]]
+symbol = "RIVN"
+exchange = "SMART"
+currency = "USD"
+max_position_shares = 12
+max_order_shares = 2
+max_order_notional = 90.00
+min_price = 1.00
+max_price = 80.00
+max_spread_bps = 70.0
+min_bid_size = 1
+min_ask_size = 1

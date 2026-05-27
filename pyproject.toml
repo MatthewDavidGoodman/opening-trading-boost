@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ibkr-microexec"
+version = "0.1.0"
+description = "Guarded low-volume Interactive Brokers execution starter"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Matthew Goodman" }]
+dependencies = []
+
+[project.optional-dependencies]
+ibkr = ["ib_async>=2.0.0"]
+research = ["pandas>=2.2.0", "numpy>=1.26.0", "scikit-learn>=1.4.0", "joblib>=1.3.0", "yfinance>=0.2.40"]
+dev = ["pytest>=8.0", "ruff>=0.5.0", "pandas>=2.2.0", "numpy>=1.26.0"]
+
+[project.scripts]
+ibkr-microexec = "ibkr_microexec.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

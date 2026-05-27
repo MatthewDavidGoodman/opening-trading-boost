@@ -1,0 +1,10 @@
+symbol,name,bucket,role_in_project,live_default,max_live_notional,notes
+SOUN,SoundHound AI,AI meme / retail hype,primary high-volume hype name,true,250,AI theme with current meme-stock attention
+GME,GameStop,classic meme,classic retail reflexivity test,false,0,paper/research only unless manually enabled
+AMC,AMC Entertainment,classic meme,classic retail liquidity test,false,0,paper/research only unless manually enabled
+RKLB,Rocket Lab,space retail / thematic beta,liquid thematic control,true,250,space/defense retail attention with stronger liquidity than thin names
+LUNR,Intuitive Machines,space event meme,event-driven gap/reversal test,true,200,event headlines can dominate intraday behavior
+ACHR,Archer Aviation,eVTOL retail / thematic beta,high-beta aerospace mobility test,true,200,retail story stock; use tight size only
+BBAI,BigBear.ai,AI / defense retail hype,AI-defense momentum test,true,200,higher-risk AI/defense hype name
+KOSS,Koss,thin legacy meme,liquidity rejection stress test,false,0,used to prove spread/volume gates; not live default
+RIVN,Rivian,EV retail beta,liquid retail-hype control,true,250,larger and more liquid than core meme names

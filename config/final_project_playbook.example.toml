@@ -1,0 +1,35 @@
+# Final project playbook: setup-first, paper-first.
+# The model is a filter over named setups, not a free-form stock picker.
+
+project_title = "Retail-Hype Intraday Execution Under Capital and Liquidity Constraints"
+universe_csv = "data/final_project_universe.csv"
+setups_csv = "data/final_project_trade_setups.csv"
+feature_panel_csv = "data/features/features.csv"
+setup_output_csv = "data/reports/setup_occurrences.csv"
+trade_plan_output_csv = "data/reports/daily_trade_plan.csv"
+intent_output_csv = "data/intents.generated.csv"
+timezone = "America/New_York"
+
+[capital]
+starting_cash = 3000
+max_gross_notional = 3000
+max_single_name_live_notional = 250
+max_orders_per_day = 6
+
+[cost_model]
+commission_per_share = 0.0035
+min_commission = 0.35
+slippage_bps = 20
+extra_meme_buffer_bps = 15
+
+[research]
+bar_interval = "5m"
+training_period = "60d"
+forward_bars = 3
+primary_metric = "net_forward_return_after_cost"
+secondary_metrics = ["hit_rate", "turnover", "max_drawdown", "spread_rejection_rate", "time_window_hit_rate"]
+
+[ml]
+role = "gate_named_setups"
+features = ["ret_1", "ret_3", "ret_12", "range_bps", "rel_volume_20", "realized_vol_20", "close_vs_sma20_bps", "minute_of_day_et", "weekday"]
+models = ["logistic_regression", "random_forest", "lightgbm_optional"]

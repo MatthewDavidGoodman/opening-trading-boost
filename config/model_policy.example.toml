@@ -1,0 +1,27 @@
+# Research-only model policy. This does not send broker orders.
+# The model gates named final-project setups; it does not choose arbitrary tickers.
+
+[universe]
+path = "data/final_project_universe.csv"
+setups_path = "data/final_project_trade_setups.csv"
+
+[features]
+price_dir = "data/raw/prices"
+feature_path = "data/features/features.csv"
+min_rows_per_symbol = 30
+
+[labels]
+forward_bars = 3
+min_forward_return_bps = 25.0
+cost_buffer_bps = 20.0
+
+[model]
+kind = "logistic_regression"  # logistic_regression | random_forest
+train_fraction = 0.70
+min_probability_to_trade = 0.58
+model_path = "data/models/setup_gate.joblib"
+report_path = "data/reports/model_report.json"
+
+[outputs]
+setup_occurrences = "data/reports/setup_occurrences.csv"
+intent_output = "data/intents.generated.csv"
