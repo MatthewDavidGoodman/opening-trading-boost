@@ -8,31 +8,27 @@ This is a setup-first trading project. The model does not start by searching the
 
 ## Core question
 
-Can a small-capital trader improve intraday paper-trading results in retail-hype names by combining:
+Can a small-capital trader improve intraday simulated results in retail-hype names by combining:
 
 1. a fixed meme/retail-hype universe,
 2. setup-specific time windows,
 3. liquidity and spread gates,
 4. simple ML gates over named setups,
-5. limit-order-only execution through IBKR paper trading?
+5. conservative L2 fill assumptions using historical order book data?
 
 ## Starting universe
 
 | Symbol | Role |
 |---|---|
 | SOUN | AI meme / retail-hype primary name |
-| GME | classic meme reflexivity test; research only by default |
-| AMC | classic meme liquidity/reversal test; research only by default |
 | RKLB | space/defense retail theme with better liquidity |
-| LUNR | headline-sensitive space event name |
 | ACHR | eVTOL / aerospace mobility retail-beta name |
-| BBAI | AI-defense hype name |
-| KOSS | thin legacy meme; liquidity rejection test |
 | RIVN | larger EV retail-beta liquidity control |
+| BBAI | optional AI-defense hype name when added to config |
 
 These are not recommendations. They are research instruments for testing microstructure and execution behavior.
 
-## Named setups
+## Legacy/fallback OHLCV named setups
 
 ### 1. SOUN_OPEN_RECLAIM — AI hype open reclaim
 
@@ -94,54 +90,75 @@ These are not recommendations. They are research instruments for testing microst
 
 **Hypothesis:** A larger, more liquid retail-hype name should show whether the strategy works only in chaotic thin names or also in better execution conditions.
 
-## Data plan
+## Primary data plan: Databento L2
 
-Use two data paths:
+The final project uses Databento historical market-by-price data as its primary source:
 
-1. **Downloaded bars** for research/backtest via `yfinance`.
-2. **IBKR paper quote stream** for live paper-session quote/fill study.
+- schema: `mbp-10`
+- top ten bid and ask levels
+- one-minute feature resampling
+- raw DBN files under `data/databento/raw/`
+- processed per-symbol files under `data/databento/processed/`
+- final panel at `data/features/l2_features.csv`
 
-Suggested research bar interval:
+Set `DATABENTO_API_KEY` in the environment before making a real request. Update the dataset, date range, and `stype_in` placeholders in `config/databento_l2.example.toml` for the Databento dataset available to your account.
 
-```bash
-python research/download_prices.py \
-  --universe data/final_project_universe.csv \
-  --period 60d \
-  --interval 5m
-```
-
-Feature build:
+Preview the request without credentials or a network call:
 
 ```bash
-python research/build_features.py \
-  --policy config/model_policy.example.toml
+python research/download_databento_l2.py \
+  --config config/databento_l2.example.toml \
+  --dry-run
 ```
 
-Apply named setups:
+After reviewing cost and dataset availability, download MBP-10:
 
 ```bash
-python research/apply_trade_setups.py \
-  --features data/features/features.csv \
-  --setups data/final_project_trade_setups.csv \
-  --out data/reports/setup_occurrences.csv
+export DATABENTO_API_KEY="..."
+python research/download_databento_l2.py \
+  --config config/databento_l2.example.toml
 ```
 
-Export inactive intent rows for review:
+Build the L2 feature panel:
 
 ```bash
-python research/export_trade_intents_from_setups.py \
-  --setup-occurrences data/reports/setup_occurrences.csv \
-  --out data/intents.generated.csv \
-  --mode paper
+python research/build_l2_features.py \
+  --config config/databento_l2.example.toml
 ```
 
-Review through the execution cage:
+Apply the setup-first L2 rules:
 
 ```bash
-python -m ibkr_microexec.cli review-intents \
-  --config config/meme_stock_trading_plan.example.toml \
-  --intents data/intents.generated.csv
+python research/apply_l2_setups.py \
+  --config config/databento_l2.example.toml
 ```
+
+Simulate conservative paper-only fills:
+
+```bash
+python research/simulate_l2_trades.py \
+  --config config/databento_l2.example.toml
+```
+
+The simulation enters long setups at the ask, exits at the bid after the configured holding period, and subtracts estimated costs. It does not submit orders.
+
+## L2 setups
+
+- `L2_RECLAIM_LONG`: liquidity passes, five-minute midprice return is positive, ten-level imbalance favors bids, microprice is above midprice, and the latest one-minute return turns positive after a non-positive bar.
+- `L2_MOMENTUM_CONFIRMATION`: liquidity passes with the same L2 long confirmation conditions and a positive one-minute midprice return.
+- `L2_LIQUIDITY_REJECT`: spread or ten-level depth fails the configured standards.
+
+## Legacy/fallback prototype data
+
+The existing `yfinance` OHLCV pipeline remains available as a legacy/fallback prototype. It is not the primary final-project data source:
+
+```bash
+python research/download_prices.py --universe data/final_project_universe.csv --period 60d --interval 5m
+python research/build_features.py --policy config/model_policy.example.toml
+python research/apply_trade_setups.py --features data/features/features.csv --out data/reports/setup_occurrences.csv
+```
+
+IBKR is not required for the final project. The guarded execution starter and inactive intent exporter remain separate optional review tooling. No IBKR connection or order placement is part of the Databento L2 pipeline.
 
 ## ML role
 
@@ -198,7 +215,7 @@ Report the following:
 4. Setup-only baseline.
 5. ML-gated setup model.
 6. Cost and liquidity filter.
-7. IBKR paper execution layer.
+7. Conservative L2 fill simulation.
 8. Results by setup family and time of day.
 9. Failure cases.
 10. Conclusion: when the model should trade, pass, or reject the name entirely.

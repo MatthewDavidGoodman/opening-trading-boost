@@ -168,7 +168,7 @@ This is educational software. It is not financial advice, an investment recommen
 
 ## Trading final project layer: setup-first retail-hype basket
 
-This repo now includes a final-project research layer for a setup-first trading study. The project begins with specific stocks and named hypotheses, then uses ML only as a gate over those setups.
+This repo includes a final-project research layer for a setup-first trading study. Databento historical `mbp-10` L2 order book data is the primary final-project source. IBKR is not required for this research pipeline.
 
 Project title:
 
@@ -181,6 +181,11 @@ data/final_project_universe.csv
 data/final_project_trade_setups.csv
 config/final_project_playbook.example.toml
 config/meme_stock_trading_plan.example.toml
+config/databento_l2.example.toml
+research/download_databento_l2.py
+research/build_l2_features.py
+research/apply_l2_setups.py
+research/simulate_l2_trades.py
 research/download_prices.py
 research/build_features.py
 research/apply_trade_setups.py
@@ -196,17 +201,23 @@ Install research dependencies:
 
 ```bash
 pip install -e .[research]
+pip install databento
 ```
 
-Run the final-project path:
+Review the Databento request without credentials or network access:
 
 ```bash
-python research/download_prices.py --universe data/final_project_universe.csv --period 60d --interval 5m
-python research/build_features.py --policy config/model_policy.example.toml
-python research/apply_trade_setups.py --features data/features/features.csv --setups data/final_project_trade_setups.csv --out data/reports/setup_occurrences.csv
-python research/train_setup_gate.py --setup-occurrences data/reports/setup_occurrences.csv
-python research/export_trade_intents_from_setups.py --setup-occurrences data/reports/setup_occurrences.csv --out data/intents.generated.csv --mode paper
-python -m ibkr_microexec.cli review-intents --config config/meme_stock_trading_plan.example.toml --intents data/intents.generated.csv
+python research/download_databento_l2.py --config config/databento_l2.example.toml --dry-run
 ```
 
-The model never sends broker orders. It evaluates named setups. Any resulting intent rows default to `active=false` and still go through the existing execution guard.
+Run the Databento L2 research path after filling in the config placeholders and setting `DATABENTO_API_KEY`:
+
+```bash
+python research/download_databento_l2.py --config config/databento_l2.example.toml
+python research/build_l2_features.py --config config/databento_l2.example.toml
+python research/apply_l2_setups.py --config config/databento_l2.example.toml
+python research/simulate_l2_trades.py --config config/databento_l2.example.toml
+.venv/bin/python -m pytest -q
+```
+
+The existing `yfinance` OHLCV scripts remain available as a legacy/fallback prototype path. The L2 simulator never connects to IBKR or sends broker orders. Any separately exported execution intent rows still default to `active=false`.

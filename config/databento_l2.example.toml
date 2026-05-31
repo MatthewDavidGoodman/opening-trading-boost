@@ -1,0 +1,26 @@
+# Databento historical L2 research config.
+# Set DATABENTO_API_KEY in the environment before making a real download.
+
+[databento]
+dataset = "YOUR_DATABENTO_DATASET"
+schema = "mbp-10"
+symbols = ["SOUN", "RKLB", "RIVN", "ACHR"]
+start = "YYYY-MM-DD"
+end = "YYYY-MM-DD"
+stype_in = "raw_symbol"
+raw_dir = "data/databento/raw"
+processed_dir = "data/databento/processed"
+feature_path = "data/features/l2_features.csv"
+resample_interval = "1min"
+max_rows = 1000000
+
+[l2_setups]
+max_spread_bps = 100.0
+min_depth_10 = 100
+min_imbalance_10 = 0.10
+
+[simulation]
+holding_period_bars = 5
+estimated_cost_bps = 5.0
+blotter_path = "data/reports/l2_trade_blotter.csv"
+summary_path = "data/reports/l2_performance_summary.csv"

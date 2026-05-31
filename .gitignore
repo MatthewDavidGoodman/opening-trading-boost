@@ -13,6 +13,10 @@ data/intents.csv
 # Research outputs
 data/raw/*
 !data/raw/.gitkeep
+data/databento/raw/*
+!data/databento/raw/.gitkeep
+data/databento/processed/*
+!data/databento/processed/.gitkeep
 data/features/*
 !data/features/.gitkeep
 data/models/*
