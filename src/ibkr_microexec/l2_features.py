@@ -15,13 +15,23 @@ def _require_pandas():
 
 
 def calculate_imbalance(bid_size: Any, ask_size: Any):
+    bid_size = bid_size.astype("float64") if hasattr(bid_size, "astype") else float(bid_size)
+    ask_size = ask_size.astype("float64") if hasattr(ask_size, "astype") else float(ask_size)
     total = bid_size + ask_size
-    return (bid_size - ask_size) / total.where(total != 0)
+    if hasattr(total, "where"):
+        return ((bid_size - ask_size) / total.where(total != 0)).fillna(0.0)
+    return 0.0 if total == 0 else (bid_size - ask_size) / total
 
 
 def calculate_microprice(best_bid: Any, best_ask: Any, bid_size: Any, ask_size: Any):
+    bid_size = bid_size.astype("float64") if hasattr(bid_size, "astype") else float(bid_size)
+    ask_size = ask_size.astype("float64") if hasattr(ask_size, "astype") else float(ask_size)
     total = bid_size + ask_size
-    return (best_bid * ask_size + best_ask * bid_size) / total.where(total != 0)
+    midprice = (best_bid + best_ask) / 2.0
+    if hasattr(total, "where"):
+        microprice = (best_bid * ask_size + best_ask * bid_size) / total.where(total != 0)
+        return microprice.where(total != 0, midprice)
+    return midprice if total == 0 else (best_bid * ask_size + best_ask * bid_size) / total
 
 
 def _book_columns() -> list[str]:

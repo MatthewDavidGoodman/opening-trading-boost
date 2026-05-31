@@ -43,6 +43,9 @@ def test_l2_feature_calculation():
     assert row["trade_count"] == 1
     assert row["trade_volume"] == 11
     assert features.iloc[6]["mid_return_5m"] > 0
+    assert features["imbalance_1"].between(-1, 1).all()
+    assert features["imbalance_10"].between(-1, 1).all()
+    assert features["microprice"].between(features["best_bid"], features["best_ask"]).all()
 
 
 def test_imbalance_calculation():
@@ -58,6 +61,34 @@ def test_microprice_calculation():
         pd.Series([10.0]),
     )
     assert microprice.iloc[0] == pytest.approx(10.15)
+
+
+def test_unsigned_sizes_do_not_underflow():
+    frame = _mbp10_fixture()
+    for level in range(10):
+        frame[f"ask_sz_{level:02d}"] = frame[f"bid_sz_{level:02d}"] + 10
+    features = build_l2_features_for_frame(
+        frame.astype(
+            {f"{side}_sz_{level:02d}": "uint64" for side in ("bid", "ask") for level in range(10)}
+        ),
+        symbol="SOUN",
+    )
+
+    assert features["imbalance_1"].between(-1, 1).all()
+    assert features["imbalance_10"].between(-1, 1).all()
+
+
+def test_zero_size_denominator_falls_back_safely():
+    imbalance = calculate_imbalance(pd.Series([0], dtype="uint64"), pd.Series([0], dtype="uint64"))
+    microprice = calculate_microprice(
+        pd.Series([10.0]),
+        pd.Series([10.2]),
+        pd.Series([0], dtype="uint64"),
+        pd.Series([0], dtype="uint64"),
+    )
+
+    assert imbalance.iloc[0] == 0.0
+    assert microprice.iloc[0] == pytest.approx(10.1)
 
 
 def test_liquidity_rejection_rule():
