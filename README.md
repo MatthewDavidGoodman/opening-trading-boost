@@ -32,4 +32,6 @@ This is not a live trading system. It does not connect to a broker or place orde
 
 ## Core Takeaway
 
-A short, selective opening warmup layer performed better than longer-window, all-day reuse, and pair-trade variants on this sample. The warmup layer is meant to be a flexible add-on for team trading research: rank hype names near the open, avoid weak opening conditions, and decide which symbols deserve strategy activation.
+A short, selective opening warmup layer performed better than longer-window, all-day reuse, and pair-trade variants on this sample.
+
+The warmup layer is meant to be a flexible add-on for team trading research: rank hype names near the open, avoid weak opening conditions, and decide which symbols deserve strategy activation.
