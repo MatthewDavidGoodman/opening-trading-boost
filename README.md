@@ -11,6 +11,41 @@ The test basket uses three deliberately different hype/liquidity names:
 - **RKLB** — space/aerospace retail-hype name used as a higher-priced stress case for the ladder sizing and ranking logic.
 
 This is not a live trading system. It does not connect to a broker or place orders. It is an offline trading final project built around Databento MBP-10 L2 order book data.
+## Trading Inputs Used
+
+This project studies the opening window using Databento MBP-10 level-2 order book data.
+
+The core idea is not to predict the whole trading day. The goal is to use early order-book behavior to decide which symbols deserve attention for a broader intraday strategy.
+
+The project uses three main setup families:
+
+1. **Imbalance**
+   - Looks for one-sided pressure in the opening book.
+   - Used by the best raw PnL version, `legacy_high_pnl_ladder`.
+
+2. **Spread Compression**
+   - Looks for names where the bid-ask spread tightens during the opening window.
+   - This can indicate improving liquidity and better trade conditions.
+
+3. **Pullback Reclaim**
+   - Looks for early pullbacks that recover during the opening period.
+   - This is treated as a possible activation pattern, not a standalone production strategy.
+
+The ranked version selects the top symbols by opening score, then tests only the best candidates instead of reusing every setup all day.
+
+The main result: short, selective opening-ladder variants performed better than longer-window, all-day reuse, and pair-trade variants on this sample.
+
+## Execution Logic
+
+Using these inputs, the engine chooses between:
+
+- `REST`: place a passive limit order
+- `JOIN`: join the best bid or offer
+- `IMPROVE`: improve inside the spread by one tick
+- `CROSS`: send a marketable limit order
+- `CANCEL_REPLACE`: update a stale order
+- `REDUCE_ONLY`: only trade to reduce exposure
+- `STAND_DOWN`: do nothing when conditions are bad
 
 ## Key Results
 
