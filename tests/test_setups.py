@@ -1,6 +1,6 @@
 from decimal import Decimal
 
-from ibkr_microexec.setups import load_trade_setups
+from opening_trading_boost.setups import load_trade_setups
 
 
 def test_load_final_project_setups():

@@ -1,3 +1,0 @@
-symbol,side,quantity,limit_price,window,active,client_tag,notes
-EXAMPLE,BUY,1,10.01,morning_confirmed,false,test_001,replace with a real approved ticker and set active=true only when ready
-DEMO,SELL,1,8.50,power_hour_careful,false,test_002,sell only if already held unless allow_short=true

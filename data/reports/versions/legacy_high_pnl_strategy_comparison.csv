@@ -1,0 +1,4 @@
+mode,trade_count,avg_net_return_bps,total_net_return_bps,win_rate,total_simulated_notional,total_notional_minutes,avg_holding_minutes,avg_net_bps_per_capital_minute,probes_by_setup_family,avg_net_bps_by_setup_family,win_rate_by_setup_family
+single_opening_teaser,2,28.299225142985335,56.59845028597067,1.0,152.14999999999998,760.7499999999999,5.0,5.659845028597067,,,
+opening_ladder,5,32.178643345728176,160.89321672864088,0.8,233.34000000000003,1166.7,5.0,6.435728669145635,OPENING_LADDER_IMBALANCE_LONG=5,OPENING_LADDER_IMBALANCE_LONG=32.178643345728176,OPENING_LADDER_IMBALANCE_LONG=0.8
+all_day_repeated_entries,24,-16.463170249950185,-395.1160859988044,0.375,1887.75,9438.75,5.0,-3.292634049990037,,,

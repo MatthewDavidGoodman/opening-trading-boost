@@ -1,0 +1,36 @@
+[databento]
+dataset = "XNAS.ITCH"
+schema = "mbp-10"
+symbols = ["SOUN", "RKLB", "RIVN"]
+start = "2026-05-28T13:30:00"
+end = "2026-05-28T20:00:00"
+stype_in = "raw_symbol"
+raw_dir = "data/databento/raw"
+processed_dir = "data/databento/processed"
+feature_path = "data/features/l2_features.csv"
+resample_interval = "1min"
+max_rows = 50000000
+
+[l2_setups]
+max_spread_bps = 100.0
+min_depth_10 = 100
+min_imbalance_10 = 0.10
+allow_imbalance_setup = true
+allow_spread_compression_setup = false
+allow_pullback_reclaim_setup = false
+
+[simulation]
+session_focus = "opening_ladder"
+warmup_start_et = "09:30"
+warmup_end_et = "10:30"
+holding_period_bars = 5
+estimated_cost_bps = 5.0
+max_ladder_probes_per_symbol = 3
+ladder_probe_notional = 50
+max_ladder_single_probe_notional = 50
+max_ladder_total_notional_per_symbol = 150
+allow_one_share_high_price_probe = false
+ladder_cooldown_minutes = 5
+use_ranked_symbol_selection = false
+max_active_symbols_per_open = 999
+minimum_opening_score = -999999

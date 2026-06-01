@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from ibkr_microexec.l2_setups import L2SetupConfig, detect_l2_setups
+from opening_trading_boost.l2_setups import L2SetupConfig, detect_l2_setups
 
 
 def main() -> int:

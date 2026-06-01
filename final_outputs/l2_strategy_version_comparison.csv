@@ -1,0 +1,6 @@
+version,window,selection_rule,setup_families,trade_count,avg_net_return_bps,total_net_return_bps,win_rate,comment
+legacy_high_pnl_ladder,09:30-10:30 ET,unranked eligible symbols,imbalance only,5,32.178643345728176,160.89321672864088,0.8,"best raw PnL, imbalance-only, RKLB skipped by sizing"
+ranked_opening_ladder,09:35-10:00 ET,top-2 ranked symbols,"imbalance, spread compression, pullback reclaim",4,15.32055210915512,61.28220843662048,0.75,cleaner controlled top-2 ranked version
+extended_opening_benchmark,09:30-10:30 ET,unranked eligible symbols,"imbalance, spread compression, pullback reclaim",6,-17.42173380091342,-104.53040280548052,0.5,longer window benchmark
+bad_benchmark_all_day_reuse,all day,repeated setup reuse,L2 named setups,24,-16.463170249950185,-395.1160859988044,0.375,"not proposed, shows all-day reuse is bad"
+pair_trade_appendix,09:35-10:00 ET,highest-score long versus lowest-score short,"imbalance, spread compression, pullback reclaim",13,-84.57380912461765,-1099.4595186200295,0.15384615384615385,"research-only, poor result"

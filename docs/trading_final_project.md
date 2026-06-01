@@ -1,20 +1,25 @@
-# Trading Final Project: Retail-Hype Intraday Execution
+# Trading Final Project: Opening-Bell Retail-Hype L2 Ladder
 
 ## Title
 
-**Retail-Hype Intraday Execution Under Capital and Liquidity Constraints**
+**Opening-Bell Retail-Hype L2 Ladder: Tiny Paper Probes and Early Book Diagnostics**
 
-This is a setup-first trading project. The model does not start by searching the whole market. It starts with a small hand-picked universe, named trade setups, and explicit trading hypotheses.
+This is an offline opening-bell diagnostic project, not an autonomous trading strategy. It starts with a small hand-picked universe, Databento MBP-10 L2 data, named book conditions, and conservative paper ladder fills.
 
 ## Core question
 
-Can a small-capital trader improve intraday simulated results in retail-hype names by combining:
+Can early book pressure, spread, microprice, and ten-level depth conditions provide a useful first read of a retail-hype name near the opening bell?
 
-1. a fixed meme/retail-hype universe,
-2. setup-specific time windows,
-3. liquidity and spread gates,
-4. simple ML gates over named setups,
-5. conservative L2 fill assumptions using historical order book data?
+The intended daily output is deliberately narrow:
+
+- tradable today,
+- pass today,
+- watch-only.
+
+The goal is to evaluate early-day book quality and tradability, not maximize full-day PnL. During
+the warmup window, the ladder may take up to three tiny probes while the book keeps qualifying.
+Each probe exits after the configured holding period, then its capital is released and available
+for rotation. This is neither one trade per day nor repeated all-day trading.
 
 ## Starting universe
 
@@ -133,14 +138,67 @@ python research/apply_l2_setups.py \
   --config config/databento_l2.example.toml
 ```
 
-Simulate conservative paper-only fills:
+Simulate conservative paper-only opening ladder fills:
 
 ```bash
 python research/simulate_l2_trades.py \
   --config config/databento_l2.example.toml
 ```
 
-The simulation enters long setups at the ask, exits at the bid after the configured holding period, and subtracts estimated costs. It does not submit orders.
+## Strategy versions
+
+The final project reports both opening-ladder variants:
+
+1. `legacy_high_pnl_ladder` is the reproduced best raw PnL configuration: five probes and `+160.89` total net bps. It intentionally keeps the `09:30-10:30 ET` window, imbalance-only family, unranked eligible symbols, and sizing rule that skips RKLB.
+2. `ranked_opening_ladder` is the cleaner controlled version: four probes and `+61.28` total net bps. It uses the tighter `09:35-10:00 ET` window and top-two ranked symbol selection.
+3. Bad benchmarks show what not to do: the longer opening window benchmark, all-day repeated reuse, and research-only pair appendix are retained as negative controls.
+
+These are not contradictory claims. The legacy version answers which reproduced configuration has the best raw PnL. The ranked version answers what survives a tighter and more controlled selection rule.
+
+Regenerate and save the legacy summary snapshot with:
+
+```bash
+python research/simulate_l2_trades.py \
+  --config config/databento_l2.legacy_high_pnl.example.toml \
+  --report-version legacy_high_pnl
+```
+
+This writes summary CSVs under `data/reports/versions/`. Raw Databento data remains ignored.
+
+The simulation retains the existing single-teaser warmup baseline and adds the opening ladder. A
+ladder probe enters at the ask, exits at the bid after the configured holding period, and subtracts
+estimated costs. It is allowed only inside the warmup window while spread, depth, imbalance,
+microprice, tape activity, cooldown, probe count, and ladder notional limits pass. It does not
+submit orders.
+
+The pre-trade assessment is separate from the realized teaser outcome. `tradable_today`,
+`watch_only`, and `pass_today` use only entry-time spread, imbalance, microprice, depth, tape
+activity, and recent midprice returns. Post-exit return is reported separately. The full-day
+repeated-entry result is retained as a benchmark showing why the intended strategy stays
+opening-focused.
+
+The simulator writes:
+
+```text
+data/reports/l2_trade_blotter.csv
+data/reports/l2_performance_summary.csv
+data/reports/l2_opening_warmup_blotter.csv
+data/reports/l2_opening_warmup_summary.csv
+data/reports/l2_opening_diagnostics.csv
+data/reports/l2_opening_vs_allday_comparison.csv
+data/reports/l2_opening_ladder_blotter.csv
+data/reports/l2_opening_ladder_summary.csv
+data/reports/l2_opening_strategy_comparison.csv
+data/reports/l2_strategy_version_comparison.csv
+data/reports/versions/legacy_high_pnl_ladder_summary.csv
+data/reports/versions/legacy_high_pnl_strategy_comparison.csv
+data/reports/versions/legacy_high_pnl_family_summary.csv
+```
+
+`l2_setup_occurrences.csv` and `l2_opening_diagnostics.csv` preserve all-day diagnostic occurrences.
+The warmup files preserve the original single-teaser baseline. The ladder blotter records each
+opening-window decision, including rejected candidates with reasons, and the strategy comparison
+places the single teaser, opening ladder, and all-day repeated-entry benchmark side by side.
 
 ## L2 setups
 
@@ -158,7 +216,8 @@ python research/build_features.py --policy config/model_policy.example.toml
 python research/apply_trade_setups.py --features data/features/features.csv --out data/reports/setup_occurrences.csv
 ```
 
-IBKR is not required for the final project. The guarded execution starter and inactive intent exporter remain separate optional review tooling. No IBKR connection or order placement is part of the Databento L2 pipeline.
+No broker connection, active order behavior, live trading, or order placement is part of the
+Databento L2 pipeline.
 
 ## ML role
 
@@ -187,7 +246,7 @@ This fits a trading final project because it separates:
 - data engineering,
 - microstructure-aware costs,
 - ML gate,
-- IBKR paper execution,
+- tiny paper teaser simulation,
 - post-trade evaluation.
 
 ## Metrics

@@ -23,6 +23,12 @@ data/models/*
 !data/models/.gitkeep
 data/reports/*
 !data/reports/.gitkeep
+!data/reports/l2_strategy_version_comparison.csv
+!data/reports/versions/
+data/reports/versions/*
+!data/reports/versions/legacy_high_pnl_ladder_summary.csv
+!data/reports/versions/legacy_high_pnl_strategy_comparison.csv
+!data/reports/versions/legacy_high_pnl_family_summary.csv
 data/intents.generated.csv
 logs/
 *.joblib

@@ -3,21 +3,17 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "ibkr-microexec"
+name = "opening-trading-boost"
 version = "0.1.0"
-description = "Guarded low-volume Interactive Brokers execution starter"
+description = "Offline Databento L2 opening warmup layer for trading research"
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [{ name = "Matthew Goodman" }]
 dependencies = []
 
 [project.optional-dependencies]
-ibkr = ["ib_async>=2.0.0"]
-research = ["pandas>=2.2.0", "numpy>=1.26.0", "scikit-learn>=1.4.0", "joblib>=1.3.0", "yfinance>=0.2.40"]
-dev = ["pytest>=8.0", "ruff>=0.5.0", "pandas>=2.2.0", "numpy>=1.26.0"]
-
-[project.scripts]
-ibkr-microexec = "ibkr_microexec.cli:main"
+research = ["pandas>=2.2.0", "numpy>=1.26.0", "scikit-learn>=1.4.0", "joblib>=1.3.0", "yfinance>=0.2.40", "matplotlib>=3.8.0"]
+dev = ["pytest>=8.0", "ruff>=0.5.0", "pandas>=2.2.0", "numpy>=1.26.0", "matplotlib>=3.8.0"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

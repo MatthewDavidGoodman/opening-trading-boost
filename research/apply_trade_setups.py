@@ -6,7 +6,7 @@ from dataclasses import asdict
 from decimal import Decimal, ROUND_DOWN
 from pathlib import Path
 
-from ibkr_microexec.setups import TradeSetup, load_trade_setups
+from opening_trading_boost.setups import TradeSetup, load_trade_setups
 
 
 def require_pandas():

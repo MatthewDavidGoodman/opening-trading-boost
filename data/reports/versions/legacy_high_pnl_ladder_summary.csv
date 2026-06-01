@@ -1,0 +1,4 @@
+symbol,ladder_candidate_count,ladder_probe_count,rejected_probe_count,average_net_return_bps,total_net_return_bps,win_rate,total_simulated_notional,total_notional_minutes,average_holding_minutes,average_net_bps_per_capital_minute,probes_by_setup_family,avg_net_bps_by_setup_family,win_rate_by_setup_family
+RIVN,60,2,58,49.9074473171618,99.8148946343236,1.0,87.42,437.1,5.0,9.981489463432359,OPENING_LADDER_IMBALANCE_LONG=2,OPENING_LADDER_IMBALANCE_LONG=49.9074473171618,OPENING_LADDER_IMBALANCE_LONG=1.0
+RKLB,60,0,60,,0.0,,0.0,0.0,,,,,
+SOUN,60,3,57,20.359440698105768,61.0783220943173,0.6666666666666666,145.92,729.5999999999999,5.0,4.071888139621154,OPENING_LADDER_IMBALANCE_LONG=3,OPENING_LADDER_IMBALANCE_LONG=20.359440698105768,OPENING_LADDER_IMBALANCE_LONG=0.6666666666666666

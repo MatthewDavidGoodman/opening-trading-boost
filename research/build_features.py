@@ -5,7 +5,7 @@ import argparse
 import tomllib
 from pathlib import Path
 
-from ibkr_microexec.features import FeatureConfig, build_feature_panel
+from opening_trading_boost.features import FeatureConfig, build_feature_panel
 
 
 def main() -> int:

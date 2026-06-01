@@ -4,7 +4,7 @@ from datetime import datetime, timedelta, timezone
 
 import pandas as pd
 
-from ibkr_microexec.features import FeatureConfig, build_features_for_frame
+from opening_trading_boost.features import FeatureConfig, build_features_for_frame
 
 
 def test_build_features_for_frame_has_labels_and_time_fields():
