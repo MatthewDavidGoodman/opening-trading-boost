@@ -1,6 +1,6 @@
 # Opening Trading Boost
 
-Opening Trading layer for retail-hype names.
+Opening Trading layer using hype names stocks. 
 
 The idea is simple: before a broader intraday strategy starts trading, use early order book behavior to decide which symbols are worth activating, which should be watched, and which should be skipped.
 
