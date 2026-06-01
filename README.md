@@ -1,6 +1,6 @@
 # Opening Trading Boost
 
-Opening Trading Boost is an offline Databento L2 research project that tests a short opening-warmup trading layer for retail-hype names.
+Opening Trading layer for retail-hype names.
 
 The idea is simple: before a broader intraday strategy starts trading, use early order book behavior to decide which symbols are worth activating, which should be watched, and which should be skipped.
 
@@ -32,6 +32,4 @@ This is not a live trading system. It does not connect to a broker or place orde
 
 ## Core Takeaway
 
-A short, selective opening warmup layer performed better than longer-window, all-day reuse, and pair-trade variants on this sample.
-
-The warmup layer is meant to be a flexible add-on for team trading research: rank hype names near the open, avoid weak opening conditions, and decide which symbols deserve strategy activation.
+A short, selective opening warmup layer performed better than longer-window, all-day reuse, and pair-trade variants on this sample. The warmup layer is meant to be a flexible add-on for team trading strategies. 
